@@ -25,7 +25,7 @@ int main()
 	heading();//The heading of the program
 	//At the end of your file, remember to have an end of line to force the end of file, or it will not read the last line
 
-	ifstream inFile;
+	ifstream inFile; //Remember to have an empty line at the end of file so that the last line is read properly
 	inFile.open("BinaryIn.dat"); //Opens the file.
 	char x; //The character used to read in the character one at a time.
 	int n = 0, deci = 0; /*Counting number to keep track of whether the binary number has started or not, so that it can skip spaces in front of it
@@ -51,7 +51,7 @@ int main()
 				cout << setw(20) << "Bad digit on input\n";
 				b = true;
 			}
-			if (x == '0' && n > 0)
+			if (x == '0' && n > 0) //Only reads 0s if they come after a 1
 			{
 				y = y + x; //Same logic as the identical line earlier, but for 0's this time
 				deci = (deci * 2) + 0;
@@ -69,7 +69,7 @@ int main()
 		{ /*b stands for bad. If it is bad, than b becomes true, and doesn't allow this to happen. a has to be true, which means the input was
 			an end of line, and n, the count of whether binary input has started has to be greater than 1, ignoring all blank lines*/
 			display(y, deci);
-			reset(y, n, deci); //Resets at the end of each line
+			reset(y, n, deci); //Resets y, n, and deci at the end of each line
 		}
 		if (b == true) //If b came back as true, then the following happens
 		{
@@ -89,22 +89,23 @@ void heading()
 }
 
 void display(string& y, int& deci)
-{
-	int len = width(y), len2 = len + 10; // Some number crunching to set the width of the numbers in their columns
-	int wid = 21 + width2(deci) - width3(len);
+{ //Function for the display of each number properly
+	int len = width(y), len2 = len + 10; // Some number crunching to set the width of the numbers in their columns. 10 is one less than the center, and each string length has a specific amount added to 10 to determine the width of the number
+	int wid = 21 + width2(deci) - width3(len); /*Some more number crunching to set the width. The logic is that the center of the one number from the other is 21,
+	and you just add the correct width of the number determined by width2(), and minus a number determined by the length of the binary string.*/
 
 	cout << setw(len2) << y; // Outputs the integer version of the binary input, as a string, getting rid of spaces and 0's in front of it
 	cout << setw(wid) << deci << endl; //Outputs the decimal number
 }
 
 void reset(string& yr, int& nr, int& decir)
-{
+{ //Resets y, n, and deci from the main function
 	yr = ""; //These three lines reset the deci, y, and n variables for every new line, and at the end of file
 	nr = 0;
 	decir = 0;
 }
 
-int width(string w)
+int width(string w) //These next three functions help center the output of the graph properly
 {
 	int width = 0;
 	switch (w.length())
